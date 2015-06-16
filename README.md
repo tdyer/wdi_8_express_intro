@@ -84,6 +84,30 @@ Each handler must either call next() to pass control to the next handler or call
 
 ## Middleware module: parse a JSON request
 
+Demo: configure and use body-parser to turn body into JSON
+
+## Answering REST calls
+
+Demo: implement a REST service for POST /add that adds a list of numbers passed into it as JSON
+
+Brief lab: students in groups implement a rest service for POST /average that averages a list of numbers passed into it as JSON
+
+## Integrating with the DB (with bonus mongoose review!)
+
+Walk through setting up mongoose for contacts
+
+Create a schema
+
+Create a model class from the schema
+
+Create a 'seed.js' in lib/ to seed the db with some contacts
+
+## Make a REST service
+
+Students should have all they need to do this
+
+
+
 
 
 
