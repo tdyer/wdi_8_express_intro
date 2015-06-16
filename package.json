@@ -1,16 +1,14 @@
 {
-  "name": "node-demo",
-  "version": "0.0.1",
-  "description": "A simple project to demonstrate node.",
+  "name": "wdi-8-mongoose-intro",
+  "version": "0.1.0",
+  "description": "the basics of express.",
   "main": "app.js",
   "scripts": {
     "test": "grunt jasmine-nodejs"
   },
   "author": "Charlton Wilbur",
   "license": "BSD-3-Clause",
-  "dependencies": {
-    "async": "^1.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-blanket": "0.0.8",
@@ -30,17 +28,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cwilbur/node_demo.git"
+    "url": "git+https://github.com/ga-wdi-boston/wdi_8_express_intro.git"
   },
   "keywords": [
-    "tictactoe",
+    "express",
     "node",
     "demo",
     "grunt",
     "configuration"
   ],
   "bugs": {
-    "url": "https://github.com/cwilbur/node_demo/issues"
+    "url": "https://github.com/ga-wdi-boston/wdi_8_express_intro/issues"
   },
-  "homepage": "https://github.com/cwilbur/node_demo#readme"
+  "homepage": "https://github.com/ga-wdi-boston/wdi_8_express_intro#readme"
 }

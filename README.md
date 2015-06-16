@@ -1,64 +1,51 @@
-# Template Node Project Repository
+# Introduction to Express
 
-## Installation
+## Objectives
 
-At the top level:
+* Set up and configure a project to use express 
+* Configure routes and handlers in express
+* Explain and use express concepts of "handler chains" and "middleware"
+* Use the 'body-parser' middleware to oarse POST and PUT requests
+* Integrate express with mongoose to implement a REST service
+
+## Installing express
 
 ```
 npm install
+npm install mongoose --save
+npm install express --save
 ```
 
-## This repository assumes the following layout of files:
+## basic express configuration and hello world
+
+at the top of your main file - load dependencies and initialize
 
 ```
-.
-├── ./package.json
-├── ./Gruntfile.js
-├── ./grunt
-│   ├── ./grunt/aliases.json
-│   ├── ./grunt/paths.json
-│   └── ...
-├── ./node_modules
-│   └── ...
-├── ./README.md
-├── ./app.js
-├── ./lib
-│   └── ./lib/tic-tac-toe.js
-└── ./spec
-    └── ./spec/tic-tac-toe.spec.js
+var express = require('express');
+var app = express();
 ```
 
-This is where everyhing is stored:
+at the bottom of your main file - start the server
 
-* Overall package configuration is stored in `package.json`.  
+```
+var server = app.listen(3000, function () {
 
-* Configuration files for **grunt**, our task runner: `./Gruntfile.js` and `./grunt` directory.  This is our task runner, like rake in Ruby.  If you follow the layout guidelines here, you won't need to change anything in here.
+  var host = server.address().address;
+  var port = server.address().port;
 
-* Node packages you install from elsewhere are stored in `./node_modules` 
+  console.log('Example app listening at http://%s:%s', host, port);
 
-* The documentation you provide for users (like the documentation you're reading right now!) is included in `./README.md` 
+});
+```
 
-* The entry point into your application should be the only Javascript file at the top level.  By convention it's called `index.js`, `app.js`, `main.js`, or `server.js`, and is named in the `package.json` file.
+in the middle of your main file - routes and handlers
 
-* All of your other code goes into the `./lib` (library) directory.
+```
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+```
 
-* All of your tests go into the `./spec` (specification) directory.
-
-## Grunt automations
-
-Type these at the command line to see useful things happen.
-
-* `grunt debug` - runs your application in debug mode, fires up a `node-inspector` translation process, and opens a Chrome window to access `node-inspector`.
-
-* `grunt test` - runs your test suite
-
-* `grunt nag` - runs code quality analysis tools on your code and complains
-
-    * `grunt jshint` - runs jshint on your <code>
-    * `grunt jsonlint` - runs jsonlint on your json files 
-    * `grunt jscs:status` - runs jscs (Javascript Code Style) on your files
-    * `grunt jsbeautifier:status` finds parts of your code that could be beautified
- 
-* `grunt reformat` - reformats all your code in a standard style
+(This entire app is at examples/express-hello-world.js)
 
 
