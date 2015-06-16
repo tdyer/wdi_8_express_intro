@@ -48,4 +48,46 @@ app.get('/', function (req, res) {
 
 (This entire app is at examples/express-hello-world.js)
 
+Take 5-10 minutes and get this up on your own computer.  See that you get the same results. 
+
+## What is a handler?
+
+A handler is a function that responds to a request on a route.  
+
+talk about function signatures for regular handlers, terminal handlers, error handlers
+
+demonstrate fiddling with the response object:
+
+```
+app.get('/', function (req, res) {
+  res.json({ hello: 'world' });
+});
+```
+
+## Handlers can be chained
+
+```
+app.get('/', function (req, res) {
+  res.locals.result = { name: 'Domino' };
+  next();
+});
+
+app.get('/', function (req, res) {
+  res.locals.result.species = 'cat';
+  res.locals.result.age = 1;
+  res.locals.result.color = 'tuxedo';
+  res.json(app.locals.result);
+});
+```
+
+Each handler must either call next() to pass control to the next handler or call one of the methods listed under "response methods" at http://expressjs.com/guide/routing.html
+
+## Middleware module: parse a JSON request
+
+
+
+
+
+
+
 
