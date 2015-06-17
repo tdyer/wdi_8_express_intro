@@ -8,7 +8,10 @@
   },
   "author": "Charlton Wilbur",
   "license": "BSD-3-Clause",
-  "dependencies": {},
+  "dependencies": {
+    "async": "^1.2.1",
+    "mongoose": "^4.0.5"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-blanket": "0.0.8",
