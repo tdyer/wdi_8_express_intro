@@ -9,7 +9,7 @@
 
     "curly": true,
     "eqeqeq": true,
-    "strict": true,
+    "strict": false,
     "undef": true,
     "sub": true,
     "esnext": true,
