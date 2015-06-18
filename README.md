@@ -537,7 +537,8 @@ var server = app.listen(3000, function() {
 });
 ```
 
-### Our first service:  GET /contacts
+### Show all Contacts.
+**GET '/contacts'**
 
 This will find ALL of the contacts and return them as JSON.
 
@@ -550,7 +551,8 @@ app.get('/contacts', function(req, res) {
 
 ```
 
-### Our second service: GET /contacts/:id
+### Show a Contact
+**GET '/contacts/:id'**
 
 ```javascript app.get('/contacts/:id', function(req, res) {
   Contact.find({
@@ -560,24 +562,79 @@ app.get('/contacts', function(req, res) {
   });
 });
 ```
-## Parse a JSON request
 
-Demo: configure and use body-parser to turn body into JSON
+### Create a Contact
+**POST '/contacts'**
 
-## Answering REST calls
+```javascript
+app.post('/contacts', jsonParser);
+app.post('/contacts', function(req, res) {
+  Contact.create(req.body, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(201);
+    }
+  });
+});
+```
 
-Demo: implement a REST service for POST /add that adds a list of numbers passed into it as JSON
+### Update a Contact with HTTP PUT
+**PUT '/contacts'**
 
-Brief lab: students in groups implement a rest service for POST /average that averages a list of numbers passed into it as JSONe
+```javascript
+app.put('/contacts/:id', jsonParser);
+app.put('/contacts/:id', function(req, res) {
+  Contact.findByIdAndUpdate(req.params.id, req.body, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+```
+### Update a Contact with HTTP PATCH
+**PATCH '/contacts'**
 
+```javascript
+app.patch('/contacts/:id', jsonParser);
+app.patch('/contacts/:id', function(req, res) {
+  Contact.findByIdAndUpdate(req.params.id, {
+    $set: req.body
+  }, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+```
+
+### Delete a Contact
+**DELETE '/contacts'**
+
+```javascript
+app.delete('/contacts/:id', function(req, res) {
+  Contact.remove({
+    _id: req.params.id
+  }, function(error) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(204);
+    }
+  });
+});
+```
 
 ## Make a REST service
 
-Students should have all they need to do this.
-
-
-
-TODO: link in mongoose howto and mongo reference cards
 
 
 
