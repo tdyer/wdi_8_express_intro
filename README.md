@@ -10,7 +10,7 @@
 
 ## Before we begin: a review of project layout.
 
-Because this is based on our standard Node project template, you have extra resources available to you if you follow the standard node package layout.  It is all documented in the file LAYOUT.md in this repository.
+Because this is based on our standard Node project template, you have extra resources available to you if you follow the standard node package layout.  It is all documented in the file [LAYOUT.md](LAYOUT.md) in this repository.
 
 ## Installing express
 

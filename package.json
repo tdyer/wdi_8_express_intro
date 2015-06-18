@@ -1,5 +1,5 @@
 {
-  "name": "wdi-8-mongoose-intro",
+  "name": "wdi-8-express-intro",
   "version": "0.1.0",
   "description": "the basics of express.",
   "main": "app.js",
@@ -9,8 +9,6 @@
   "author": "Charlton Wilbur",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "async": "^1.2.1",
-    "mongoose": "^4.0.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
