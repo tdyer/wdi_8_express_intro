@@ -12,7 +12,7 @@
 
 Because this is based on our standard Node project template, you have extra resources available to you if you follow the standard node package layout.  It is all documented in the file [LAYOUT.md](doc/LAYOUT.md) in the `./doc` directory in this repository.
 
-Also in that directory, you can find [INSTALL-MongoDB.md](doc/INSTALL-MongoDB.md), a summary of how to install MongoDB; [MongoReferenceCards.pdf](doc/MongoReferenceCards.pdf), a set of reference cards for MongoDB; and [Mongoose-HOWTO.md](doc/Mongoose-HOWTO.md), a summary of Mongoose.\
+Also in that directory, you can find [INSTALL-MongoDB.md](doc/INSTALL-MongoDB.md), a summary of how to install MongoDB; [MongoReferenceCards.pdf](doc/MongoReferenceCards.pdf), a set of reference cards for MongoDB; and [Mongoose-HOWTO.md](doc/Mongoose-HOWTO.md), a summary of Mongoose.
 
 ## Installing express
 
