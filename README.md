@@ -29,13 +29,19 @@ npm install body-parser --save
 This is a codealong (even though the bits of code are short).
 
 First, we load our dependencies and start configuring our application: 
-```
+
+See [express()](http://expressjs.com/4x/api.html#express)
+
+```javacript
 var express = require('express');
 var app = express();
 ```
 
 At the bottom of your main file you will start the server:
-```
+
+See [app.listen](http://expressjs.com/4x/api.html#app.listen)
+
+```javascript
 var server = app.listen(3000, function () {
 
   var host = server.address().address;
@@ -47,11 +53,17 @@ var server = app.listen(3000, function () {
 ```
 
 In the middle of the main file, you put routes and handlers for routes.  Right now we'll start with a simple one:
-```
+
+See [app.get](http://expressjs.com/4x/api.html#app.get.method)
+
+```javascript
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 ```
+*The req object is a [http.IncomingMessage](https://nodejs.org/api/http.html#http_http_incomingmessage)  object. This is what we used in the simple HTTP node server.*
+
+*The res object is [http.ServerResponse](https://nodejs.org/api/http.html#http_class_http_serverresponse) object. Also used in the simple HTTP node server*
 
 (This entire app is available as `examples/express-hello-world.js`, and you can run it by itself.) Take 5-10 minutes and get this up and running on your own computer.  Make sure you see the same thing in the browser.
 
@@ -62,6 +74,12 @@ Example app listening at http://:::3000
 ```
 
 That is just the way of saying "localhost" in the newer dialects of the Internet Protocol.
+
+## Read about Routes and Handlers
+
+[Express Routing](http://expressjs.com/guide/routing.html)
+
+Just an overview of what we'll be doing below.
 
 ## What is a handler?
 
@@ -146,7 +164,7 @@ app.get('/contacts', function(req, res) {
 
 Look at the page in your browser and notice that the handlers were invoked in the order we defined them.
 
-`res.locals` is a property of the response object that is explicitly for handler functions to store information in.  It persists through the life of the request/response, and is shared across middleware and handlers. 
+[`res.locals`](http://expressjs.com/4x/api.html#res.locals) is a property of the response object that is explicitly for handler functions to store information in.  It persists through the life of the request/response, and is shared across middleware and handlers. 
 
 Also notice that we have three ordinary handlers (req, res, next as arguments and one terminal handler (only req and res as arguments, and one of our statements that end processing.
 
@@ -175,17 +193,28 @@ app.get('/contacts', function(req, res) {
 
 And in fact, in real apps you probably won't write three handlers to do basically the same thing with different strings.
 
-What you will most likely do, however, is write an authentication handler that needs to run for certain routes, and a content handler that needs to run for certain routes, and a security logging handler that needs to run for certain routes.  Being able to chain handlers means that you can make your code modular and run only the modules you need for any given request.
+What you will most likely do, however, is write an **authentication handler** that needs to run for certain routes, and a **content handler** that needs to run for certain routes, and a **security logging** handler that needs to run for certain routes.  
+
+Being able to chain handlers means that you can make your code **modular** and run only the modules you need for any given request.
+
+Most Web frameworks have this kind of HTTP Request Processing mechanism. For example, in Rails we have before_actions that are invoke for specific controller actions. 
+
+And Rails also has middleware, the CORS-Rack gem we used is middleware.
 
 ## Mini Lab
 
 Create a set of handlers for the `GET` method and the `/articles` resource.
 
-Each article should have a two-to-three word title, a publication date, a one-sentence body (this is just an example), and what mood you were in when you wrote it.
+Each article should have a set of attributes:
 
-Create four chained handlers that add to some attribute of the `res.locals` property ("articles" might be a good choice for property name), and a fifth handler to terminate the chain.
+* Two-to-three word `title`  
+* A `publication date`
+* A one-sentence `body` (this is just an example)
+* A `mood` you were in when you wrote it.
 
+Create a set of chained handlers. Each chained handler will add ONE article to the list of articles. The list of articles `articles` will be a property of `res.locals` and will persist over the life of the HTTP request.
 
+Make sure you create a **terminal handler**. You know what a terminal handler is, right? We told you above. A **terminal handler** will contain a statement that will terminate the request. [Search for terminate in the Routing Guide Here](http://expressjs.com/guide/routing.html)
 
 ## Back to the Database
 
@@ -196,6 +225,8 @@ Based on this, we can put together a Mongoose schema.
 This is one of the model objects for our application, so it belongs under the ./lib directory.  Since it is for contacts, we call it contacts.js.
 
 Because we need to access the Mongoose object, we have to start the file with a `require` statement:
+
+**Create lib/contacts.js**
 
 ```javascript
 var mongoose = require('mongoose');
@@ -342,7 +373,133 @@ Schemas, and even model object factories, are sort of abstract.  Let's put some 
 
 Support scripts for your app should go in a `./scripts` directory, and there is one in this repository.  We will be creating the file `seed-contacts-database.js` there.
 
-## Dear Blog: I hate Schemas!!!!
+#### Setup seed file.
+**Create a file scripts/seed-contact-database.js**
+
+```javascript
+// require modules
+var async = require('async');
+var mongoose = require('mongoose');
+
+// connect to the contacts DB.
+mongoose.connect('mongodb://localhost/contacts');
+```
+
+#### Use the Contact model
+
+```javascript
+// Contact is the constructor function for the Contact model.
+var Contact = require('../lib/contacts.js');
+```
+
+#### Serialize Execution of Contact Creation
+
+```javascript
+// Use the Async series method.
+async.series([ ]):
+```
+
+#### Remove all Contacts
+
+```javascript
+async.series([ 
+	// Remove all contacts
+	function(done) {
+      Contact.remove({}, done);
+   }
+]
+```
+
+#### Create a contact for socks the cat.
+
+```javascript
+async.series([ 
+	// Remove all Contacts
+	...
+	// Create socks the cat contact
+   function(done) {
+     Contact.create({
+       firstName: 'Socks',
+       lastName: 'Clinton',
+       title: 'First Cat'
+     }, done);
+   }
+]
+```
+
+#### Create an ex-president.
+
+```javascript
+async.series([ 
+	...
+	// Create socks the cat contact
+	...
+	// Create contact for John Adams
+   function(done) {
+      Contact.create({
+        firstName: 'John',
+        lastName: 'Adams',
+        title: 'President',
+        addresses: [{
+          addressType: 'work',
+          street: '1600 Pennsylvania Avenue',
+          city: 'Washington',
+          state: 'DC',
+          zipCode: '20500',
+          country: 'United States of America'
+        }, {
+          addressType: 'home',
+          street: '150 Adams Street',
+          city: 'Dorchester Center',
+          state: 'MA',
+          zipCode: '02124'
+        }]
+      }, done);
+    }
+  ]
+]
+```
+
+Notice that here we are creating embedded collections of addresses. In Rails land we probably would've created another model name Address and created a one to many relationship between Contact and Address. 
+
+#### Finally, let's call the last function in the series.
+
+This will report and error if one occured and disconnect from the contacts DB.
+
+```javascript
+async.series([ 
+	...
+  // Create contact for John Adams
+	...
+	
+  // Disconnect from the DB.
+  function(error) {
+    if (error) {
+      console.error(error);
+    }
+    mongoose.disconnect();
+  }
+};
+```
+
+### Populate the contact DB.
+
+```node scripts/seed-contacts-database_done.js```
+
+**Start up node and check the contacts DB.**
+
+>> var mongoose = require('mongoose');
+>>
+>> mongoose.connect('mongodb://localhost/contacts');
+>>
+>> var Contact = require('./lib/contacts.js');
+>> 
+>>  Contact.find({}, function(err, contactList){console.log(contactList); }  );
+>> 
+>> 
+>> Contact.remove({}, function(){console.log('emptied contacts');} );
+
+## Your Turn, Dear Blog: I hate Schemas!!!!
 
 Create a schema for articles in a blog.  They should have a title, an optional subtitle, a permanent URL link, a publication date, a body, and a description of your mood when you wrote it. You're planning a set of nifty icons, so constrain your moods to no more than 7.
 
@@ -357,8 +514,14 @@ We're going to turn our `app.js` into a full-fledged REST server for contacts. W
 When you're done, your `app.js` file should have this at the beginning:
 
 ```javascript
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/contacts');
+
+
 var express = require('express');
 var app = express();
+
+var Contact = require('./lib/contacts.js');
 ```
 
 and this at the end:
@@ -376,17 +539,27 @@ var server = app.listen(3000, function() {
 
 ### Our first service:  GET /contacts
 
-We start with a route and the shell of a handler:
+This will find ALL of the contacts and return them as JSON.
 
 ```javascript
-app.get('/contacts', function(req, res, next){
-
+app.get('/contacts', function(req, res) {
+  Contact.find({}, function(error, contactList) {
+    res.json(contactList);
+  });
 });
-
 
 ```
 
+### Our second service: GET /contacts/:id
 
+```javascript app.get('/contacts/:id', function(req, res) {
+  Contact.find({
+    _id: req.params.id
+  }, function(error, contact) {
+    res.json(contact);
+  });
+});
+```
 ## Parse a JSON request
 
 Demo: configure and use body-parser to turn body into JSON
