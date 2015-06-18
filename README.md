@@ -310,6 +310,20 @@ The only new thing here is that the keys `addresses`, `phoneNumbers`, and `email
 
 Read through the entire schema so far and make sure you understand what all of the validations require.  (It's okay if you are fuzzy on the regular expressions.) Later on you will need to write one of these for yourself.
 
+Now we're going to add something we expect to be convenient.  The database stores first and last names separately.  A good deal of the time, we're going to use them together as a full name.  So we create a `virtual attribute` called fullName.  We must define how to translate from first and last names to full name and back:
+
+```javascript
+contactSchema.virtual('fullName').get(function() {
+  return this.firstName + ' ' + this.lastName;
+});
+
+contactSchema.virtual('fullName').set(function(name) {
+  var names = name.split(' ');
+  this.firstName = names[0];
+  this.lastName = names[1];
+});
+```
+
 The next-to-last thing we need to do is to turn our schema into a model:
 
 ```javascript
@@ -328,31 +342,50 @@ Schemas, and even model object factories, are sort of abstract.  Let's put some 
 
 Support scripts for your app should go in a `./scripts` directory, and there is one in this repository.  We will be creating the file `seed-contacts-database.js` there.
 
-
-
-
 ## Dear Blog: I hate Schemas!!!!
 
-Create a schema for articles in a blog.  They should have a title, an optional subtitle, a publication date, a body, and a description of your mood when you wrote it. You're planning a set of nifty icons, so constrain your moods to no more than 7.
+Create a schema for articles in a blog.  They should have a title, an optional subtitle, a permanent URL link, a publication date, a body, and a description of your mood when you wrote it. You're planning a set of nifty icons, so constrain your moods to no more than 7.
+
+Add two virtual attributes. One should produce an HTML anchor tag linking to that blog article based on the permanent link and the article title.  This will be read-only: you need to write the get function but not the set function.  The other should be a word count of the body of the article: also read-only. 
 
 Your blog will also attract comments.  Each blog article will have a list of 0 or more comments.  Each comment will have the username of the user who posted it, an optional URL for the commenter's blog, the date the user posted it, the body of the comment, and a Boolean flag indicating whether you approved of its publication.  (Sadly, your blog will attract a lot of spammers too.)
 
-## 
+## RESTful Contacts
+
+We're going to turn our `app.js` into a full-fledged REST server for contacts. Wipe out all the routes.  (If you think you'll feel nostalgic for them, you can save a copy of the file elsewhere.)
+
+When you're done, your `app.js` file should have this at the beginning:
+
+```javascript
+var express = require('express');
+var app = express();
+```
+
+and this at the end:
+
+```javascript
+var server = app.listen(3000, function() {
+
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log('Example app listening at http://%s:%s', host, port);
+
+});
+```
+
+### Our first service:  GET /contacts
+
+We start with a route and the shell of a handler:
+
+```javascript
+app.get('/contacts', function(req, res, next){
+
+});
 
 
+```
 
-
-
-
-## Integrating with the DB (with bonus mongoose review!)
-
-Walk through setting up mongoose for contacts
-
-Create a schema
-
-Create a model class from the schema
-
-Create a 'seed.js' in lib/ to seed the db with some contacts
 
 ## Parse a JSON request
 
@@ -371,6 +404,7 @@ Students should have all they need to do this.
 
 
 
+TODO: link in mongoose howto and mongo reference cards
 
 
 

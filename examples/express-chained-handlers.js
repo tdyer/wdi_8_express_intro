@@ -40,12 +40,6 @@ app.get('/', function(req, res, next) {
   next();
 });
 
-// app.get('/', function(req, res) {
-//   res.json(res.locals.contacts);
-//   res.status(200);
-// });
-
-
 var server = app.listen(3000, function() {
 
   var host = server.address().address;

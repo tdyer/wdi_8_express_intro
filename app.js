@@ -1,48 +1,78 @@
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/contacts');
+
 var express = require('express');
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
 var app = express();
 
-app.get('/', function(req, res, next) {
-  if (!res.locals.contacts) {
-    res.locals.contacts = [];
-  }
+var Contact = require('./lib/contacts.js');
 
-  // get contacts from iPhone/iCloud
-  res.locals.contacts.push({
-    name: 'Tom',
-    phone: '617-555-1234'
+var util = require('util');
+
+app.get('/contacts', function(req, res) {
+  Contact.find({}, function(error, contactList) {
+    res.json(contactList);
   });
-  next();
 });
 
-app.get('/', function(req, res, next) {
-  if (!res.locals.contacts) {
-    res.locals.contacts = [];
-  }
-
-  // get contacts from Google/Android
-  res.locals.contacts.push({
-    name: 'Charlton',
-    phone: '617-555-1111'
+app.get('/contacts/:id', function(req, res) {
+  Contact.find({
+    _id: req.params.id
+  }, function(error, contact) {
+    res.json(contact);
   });
-  next();
 });
 
-app.get('/', function(req, res, next) {
-  if (!res.locals.contacts) {
-    res.locals.contacts = [];
-  }
-
-  // get contacts from Hotmail
-  res.locals.contacts.push({
-    name: 'Antony',
-    phone: '617-555-3311'
+app.post('/contacts', jsonParser);
+app.post('/contacts', function(req, res) {
+  Contact.create(req.body, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(201);
+    }
   });
-  next();
 });
 
-app.get('/', function(req, res) {
-  res.json(res.locals.contacts);
-  res.status(200);
+app.put('/contacts/:id', jsonParser);
+app.put('/contacts/:id', function(req, res) {
+  Contact.findByIdAndUpdate(req.params.id, req.body, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.patch('/contacts/:id', jsonParser);
+app.patch('/contacts/:id', function(req, res) {
+  Contact.findByIdAndUpdate(req.params.id, {
+    $set: req.body
+  }, function(error, contact) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.delete('/contacts/:id', function(req, res) {
+  Contact.remove({
+    _id: req.params.id
+  }, function(error) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(204);
+    }
+  });
 });
 
 var server = app.listen(3000, function() {

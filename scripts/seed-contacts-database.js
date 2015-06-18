@@ -49,8 +49,10 @@ async.series([
     }
   ],
 
-  function(done) {
+  function(error) {
+    if (error) {
+      console.error(error);
+    }
     mongoose.disconnect();
-    done();
   }
 );
